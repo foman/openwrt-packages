@@ -1,0 +1,27 @@
+name: aggregate openwrt packages
+run-name: ${{ github.actor }} Actions
+on: 
+  push:
+  schedule:
+    - cron: '0 2 * * 5'
+env:  
+  REPO_BRANCH: master  
+jobs:
+  clone-packages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Run script file
+        run: ./sync.sh
+        env: 
+          WORKSPACE: ${{ github.workspace }}
+      - name: push changes
+        continue-on-error: true
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add -A
+          git commit -am "sync changes"
+          git push
+      - run: echo "🍏 This job's status is ${{ job.status }}."
