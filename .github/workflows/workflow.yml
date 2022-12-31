@@ -1,7 +1,6 @@
 name: aggregate openwrt packages
 run-name: ${{ github.actor }} Actions
-on: 
-  push:
+on:   
   schedule:
     - cron: '0 2 * * 5'
 env:  
